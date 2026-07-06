@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokémon List</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="page-container">
+    <section class="hero">
+      <h1>Pokémon List</h1>
+      <p>View Pokémon saved from your PostgreSQL database.</p>
+
+      <form class="search-form" action="/add" method="POST">
+        <input
+          type="text"
+          name="pokemonName"
+          placeholder="Enter Pokémon name, e.g. pikachu"
+          autocomplete="off"
+          required
+        />
+        <button type="submit">Add Pokémon</button>
+      </form>
+    </section>
+
+    <% if (error) { %>
+      <div class="error-card">
+        <p><%= error %></p>
+      </div>
+    <% } %>
+
+    <section class="pokemon-list">
+      <% if (pokemonList && pokemonList.length > 0) { %>
+
+        <% pokemonList.forEach((pokemon) => { %>
+          <div class="pokemon-card">
+            <div class="pokemon-image-box">
+              <img 
+                src="<%= pokemon.image_url %>" 
+                alt="<%= pokemon.name %> image" 
+                class="pokemon-image"
+              />
+            </div>
+
+            <div class="pokemon-info">
+              <h2><%= pokemon.name %></h2>
+
+              <p class="description">
+                Description: <%= pokemon.description %>
+              </p>
+
+              <P>Effective Against: <%= pokemon.strengths %></P>
+
+              <p>
+                Ability: <%= pokemon.ability %>
+              </p>
+
+              <div class="section">
+                <h3>Type</h3>
+                <span class="tag"><%= pokemon.type %></span>
+              </div>
+
+              <form action="/delete" method="POST" class="delete-form">
+                <input type="hidden" name="pokemonId" value="<%= pokemon.id %>" />
+                <button type="submit" class="delete-btn">Delete</button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+
+      <% } else { %>
+        <section class="empty-state">
+          <p>No Pokémon saved yet.</p>
+        </section>
+      <% } %>
+    </section>
+  </main>
+</body>
+</html>
