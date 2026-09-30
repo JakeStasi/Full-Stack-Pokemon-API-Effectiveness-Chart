@@ -13,7 +13,8 @@ const port = Number(process.env.PORT || 3000);
 const saltRounds = 5;
 const isProduction = process.env.NODE_ENV === "production";
 
-
+// Creates a database connection pool when a query comes in a database connections needs to be created to handle that query so we keep a pool of connections that be reused
+// We keep a max of 5 connections open and it will close after 30 seconds if it is not being used and will return an error after 10 seconds if it can't get an connection
 const db = new pg.Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
